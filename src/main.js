@@ -128,7 +128,7 @@ function create() {
       }
     });
     // Create Hint Buttons
-    const hintCooldowns = [60, 30, 15]; // Cooldown times for hints
+    const hintCooldowns = [120, 30, 15]; // Cooldown times for hints
     const hintCardCounts = [0, 1, 3]; // Number of wrong cards left after hint
     hintCooldowns.forEach((cooldown, index) => {
       const hintButton = this.add.text(
@@ -152,6 +152,7 @@ ${cooldown}s`,
     // Handle hint button clicks
     hintButtons.forEach((hint, index) => {
       hint.button.on('pointerdown', () => {
+        playWord(this)
         if (!hint.active) return;
         // Remove wrong cards based on the hint
         const correctCards = cards.filter(card => card.text.text === currentWord);
@@ -323,4 +324,12 @@ function endGame(scene, message) {
     .setOrigin(0.5, 0.5);
   scene.sound.stopAll();
   disableCards();
+}
+function playWord(scene)
+{
+  if (currentWord) {
+        console.log(`Replaying sound for word: ${currentWord}`);
+        const audio = scene.sound.add(currentWord);
+        audio.play();
+      }
 }
