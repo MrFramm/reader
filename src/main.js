@@ -285,6 +285,8 @@ function generateCardGrid(scene) {
       const x = horizontalMargin + col * (cardWidth + horizontalMargin);
       const y = verticalMargin + row * (cardHeight + verticalMargin);
       const word = words[Math.floor(Math.random() * words.length)];
+      const maxWidth = cardWidth - 20;
+      const minFontSize = 24; // Minimum readable font size
       const cardBackground = scene.add.rectangle(
         x + cardWidth / 2,
         y + cardHeight / 2,
@@ -301,6 +303,13 @@ function generateCardGrid(scene) {
       })
         .setOrigin(0.5, 0.5)
         .setPosition(x + cardWidth / 2, y + cardHeight / 2);
+        if (cardText.width > maxWidth) {
+    // Calculate scale ratio (current width vs max allowed width)
+    const scaleRatio = maxWidth / cardText.width;
+    // Apply new font size (ensure it doesn't go below minimum)
+    const newFontSize = Math.max(minFontSize, 96 * scaleRatio);
+    cardText.setFontSize(newFontSize);
+}
       cardBackground.setInteractive({ useHandCursor: true });
       cardBackground.on('pointerdown', () => handleCardClick(scene, cardBackground, word));
       cards.push({ background: cardBackground, text: cardText });
