@@ -255,7 +255,7 @@ function handleCardClick(scene, cardBackground, word) {
   } else {
     failSnd.play();
     if (score > 0) score -= 5;
-    else score = -1; // Prevent repeated decrement, immediately negative
+    else score = -5; // Prevent repeated decrement, immediately negative
     scoreText.setText(`Score: ${score}`);
     const cardIndex = cards.findIndex(card => card.background === cardBackground);
     if (cardIndex !== -1) {
