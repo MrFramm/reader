@@ -26,9 +26,11 @@ let hintButtons = [];
 function preload() {
   this.load.audio('ok', 'assets/audio/good.mp3');
   this.load.audio('fail', 'assets/audio/wrong.mp3');
+  this.load.audio('win', 'assets/audio/win.wav')
+  this.load.audio('over', 'assets/audio/over.wav')
   this.load.image('background', 'assets/bg.webp');
+  this.load.image('lost', 'assets/lost.png')
   this.load.image('speaker', 'assets/speaker.svg'); // Speaker icon for replay button
-  console.log("Preloading JSON file...");
   this.load.json('words', 'assets/words.json'); // Load the JSON file containing words and audio paths
 }
 
@@ -78,6 +80,24 @@ function resetAllInvisibleHintButtons(scene) {
 }
 
 function create() {
+   // Clear global arrays and destroy old objects
+  cards.forEach(card => {
+    if (card.background && card.background.destroy) card.background.destroy();
+    if (card.text && card.text.destroy) card.text.destroy();
+  });
+  cards = [];
+
+  hintButtons.forEach(hint => {
+    if (hint.button && hint.button.destroy) hint.button.destroy();
+  });
+  hintButtons = [];
+
+  if (scoreText && scoreText.destroy) scoreText.destroy();
+  scoreText = null;
+
+  if (victoryText && victoryText.destroy) victoryText.destroy();
+  victoryText = null;
+  score = 0
   okSnd = this.sound.add('ok');
   failSnd = this.sound.add('fail');
   // Add background image
@@ -93,6 +113,7 @@ function create() {
     (this.sys.game.config.width - imageWidth * scale) / 2,
     (this.sys.game.config.height - imageHeight * scale) / 2
   );
+  this.backgroundImage = backgroundImage
   console.log("Loading words from JSON...");
   const wordAudioMap = this.cache.json.get('words');
   words = Object.keys(wordAudioMap);
@@ -218,7 +239,6 @@ function handleCardClick(scene, cardBackground, word) {
   if (word === currentWord) {
     okSnd.play();
     score += 10;
-    console.log(`Correct! Score: ${score}`);
     scoreText.setText(`Score: ${score}`);
     if (score >= 500) {
       endGame(scene, "Победа!");
@@ -226,7 +246,6 @@ function handleCardClick(scene, cardBackground, word) {
     }
     disableCards();
     clearCards(scene);
-    // Reset all invisible hint buttons
     resetAllInvisibleHintButtons(scene);
     scene.time.delayedCall(1000, () => {
       generateCardGrid(scene);
@@ -236,7 +255,7 @@ function handleCardClick(scene, cardBackground, word) {
   } else {
     failSnd.play();
     if (score > 0) score -= 5;
-    console.log(`Wrong! Score: ${score}`);
+    else score = -1; // Prevent repeated decrement, immediately negative
     scoreText.setText(`Score: ${score}`);
     const cardIndex = cards.findIndex(card => card.background === cardBackground);
     if (cardIndex !== -1) {
@@ -244,8 +263,14 @@ function handleCardClick(scene, cardBackground, word) {
       cards[cardIndex].text.destroy();
       cards.splice(cardIndex, 1);
     }
+    // LOSE CONDITION: If score is negative, end the game
+    if (score < 0) {
+      endGame(scene, "Вы проиграли!");
+      return;
+    }
   }
 }
+
 
 function generateCardGrid(scene) {
   clearCards(scene);
@@ -310,21 +335,67 @@ function selectRandomWord(scene) {
 
 function endGame(scene, message) {
   clearCards(scene);
-  victoryText = scene.add.text(
-    scene.sys.game.config.width / 2,
-    scene.sys.game.config.height / 2,
-    message,
-    {
-      fontSize: '96px',
-      color: '#ffffff',
-      backgroundColor: '#000000',
-      padding: { x: 20, y: 10 }
-    }
-  )
-    .setOrigin(0.5, 0.5);
   scene.sound.stopAll();
-  disableCards();
+
+  if (message === "Победа!") {
+    scene.sound.play('win');
+    victoryText = scene.add.text(
+      scene.sys.game.config.width / 2,
+      scene.sys.game.config.height / 2,
+      message,
+      {
+        fontSize: '96px',
+        color: '#ffffff',
+        backgroundColor: '#000000',
+        padding: { x: 20, y: 10 }
+      }
+    ).setOrigin(0.5, 0.5);
+    disableCards();
+  } else {
+    // Game Over flow
+    // Change background to 'lost' image
+    scene.backgroundImage.destroy()
+    const lostBG = scene.add.image(0, 0, 'lost').setOrigin(0, 1);
+    const tex = scene.textures.get('lost');
+    const imageWidth = tex.getSourceImage().width;
+    const imageHeight = tex.getSourceImage().height;
+    const scaleX = scene.sys.game.config.width / imageWidth;
+    const scaleY = scene.sys.game.config.height / imageHeight;
+    const scale = Math.min(scaleX, scaleY);
+    lostBG.setScale(scale);
+    lostBG.setPosition(
+      (scene.sys.game.config.width - imageWidth * scale) / 2,
+      scene.sys.game.config.height
+    );
+
+    // Play lost sound
+    const sound = scene.sound.add('over');
+    sound.play();
+
+    // Show Game Over text on top
+    victoryText = scene.add.text(
+      scene.sys.game.config.width / 2,
+      scene.sys.game.config.height / 3,
+      message,
+      {
+        fontSize: '96px',
+        color: '#ffffff',
+        backgroundColor: '#000000',
+        padding: { x: 20, y: 10 }
+      }
+    ).setOrigin(0.5, 0.5);
+
+    disableCards();
+
+    // When lost sound finishes, restart the game
+    sound.once('complete', () => {
+      scene.scene.restart();
+      score = 0; // Optionally reset score here
+    });
+  }
 }
+
+
 function playWord(scene)
 {
   if (currentWord) {
