@@ -63,5 +63,6 @@
     "шутка": "assets/audio/shutka.mp3",
     "вещь": "assets/audio/veshch.mp3",
     "сытый": "assets/audio/sytyy.mp3",
-    "этаж": "assets/audio/etazh.mp3"
+    "этаж": "assets/audio/etazh.mp3",
+    "Аскольд": "assets/audio/askold.mp3"
 }
