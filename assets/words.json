@@ -64,5 +64,22 @@
     "вещь": "assets/audio/veshch.mp3",
     "сытый": "assets/audio/sytyy.mp3",
     "этаж": "assets/audio/etazh.mp3",
-    "Аскольд": "assets/audio/askold.mp3"
+    "Аскольд": "assets/audio/askold.mp3",
+    "какашка": "assets/audio/kakashka.mp3",
+    "отстань": "assets/audio/otstan.mp3",
+    "закрой рот": "assets/audio/zakroy_rot.mp3",
+    "кефир": "assets/audio/kefir.mp3",
+    "пропал": "assets/audio/propal.mp3",
+    "Термолэнд": "assets/audio/thermoland.mp3",
+    "злюсь": "assets/audio/zlus.mp3",
+    "виноград": "assets/audio/vinograd.mp3",
+    "сообщение": "assets/audio/soobshenie.mp3",
+    "болото": "assets/audio/swamp.mp3",
+    "1000": "assets/audio/thousand.mp3",
+    "концовка": "assets/audio/ending.mp3",
+    "бесконечная": "assets/audio/endless.mp3",
+    "радуга": "assets/audio/rainbow.mp3",
+    "самокат": "assets/audio/scooter.mp3",
+    "А4": "assets/audio/a4.mp3",
+    "Владус": "assets/audio/vladus.mp3"
 }
