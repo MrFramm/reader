@@ -93,5 +93,20 @@
   "живые": "assets/audio/living.mp3",
   "пожиратель": "assets/audio/muncher.mp3",
   "запрещено": "assets/audio/notallowed.mp3",
-  "группа Радуга": "assets/audio/rainbow_group.mp3"
+  "группа Радуга": "assets/audio/rainbow_group.mp3",
+  "про": "assets/audio/pro.mp3",
+  "заказ": "assets/audio/order.mp3",
+  "слабак": "assets/audio/weakling.mp3",
+  "уровень": "assets/audio/level.mp3",
+  "100 лайков": "assets/audio/100likes.mp3",
+  "леденец": "assets/audio/lollypop.mp3",
+  "Олеся": "assets/audio/olesya.mp3",
+  "светофор": "assets/audio/trafficlight.mp3",
+  "конфета": "assets/audio/candy.mp3",
+  "пельмени": "assets/audio/dumplings.mp3",
+  "тормоза": "assets/audio/breaks.mp3",
+  "отказаться": "assets/audio/refuse.mp3",
+  "велосипед": "assets/audio/bicycle.mp3",
+  "аномалия": "assets/audio/anomaly.mp3",
+  "инструкция": "assets/audio/instruction.mp3"
 }
