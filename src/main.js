@@ -34,7 +34,7 @@ function preload() {
   this.load.audio("scream", "assets/audio/women_scream.mp3");
   this.load.image("background", "assets/bg.webp");
   this.load.image("lost", "assets/lost.png");
-  this.load.image("backgroundHidden", "assets/ohDeer.jpg");
+  this.load.video("hiddenVideo", "assets/rabid.mp4");
   this.load.image("speaker", "assets/speaker.svg"); // Speaker icon for replay button
   this.load.json("words", "assets/words.json"); // Load the JSON file containing words and audio paths
 }
@@ -85,6 +85,13 @@ function resetAllInvisibleHintButtons(scene) {
 }
 
 function create() {
+  // === DEBUG: Instant win with valid code ===
+  this.input.keyboard.once("keydown-V", () => {
+    codeDigits = ["1", "2", "3", "4"]; // or any 4-digit array
+    score = 500;
+    endGame(this, "Победа!");
+  });
+
   window.sc = this;
   // Clear global arrays and destroy old objects
   cards.forEach((card) => {
@@ -530,19 +537,21 @@ function showPinInput(scene, code) {
     const enteredPin = inputs.map((i) => i.value).join("");
     if (enteredPin.length === 4) {
       if (enteredPin === code) {
-        // Show hidden background image in Phaser
-        scene.add
-          .image(
+        const video = scene.add
+          .video(
             scene.sys.game.config.width / 2,
             scene.sys.game.config.height / 2,
-            "backgroundHidden"
+            "hiddenVideo"
           )
           .setOrigin(0.5)
           .setDepth(20);
 
+        // Play the video (must be triggered by user interaction due to browser policies)
+        video.play();
+
         // Remove input fields
         document.body.removeChild(pinContainer);
-        scene.sound.play("scream");
+        //scene.sound.play("scream");
       } else {
         // Clear inputs and refocus first input
         inputs.forEach((i) => (i.value = ""));
