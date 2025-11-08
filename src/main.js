@@ -85,13 +85,6 @@ function resetAllInvisibleHintButtons(scene) {
 }
 
 function create() {
-  // === DEBUG: Instant win with valid code ===
-  this.input.keyboard.once("keydown-V", () => {
-    codeDigits = ["1", "2", "3", "4"]; // or any 4-digit array
-    score = 500;
-    endGame(this, "Победа!");
-  });
-
   window.sc = this;
   // Clear global arrays and destroy old objects
   cards.forEach((card) => {

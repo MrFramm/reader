@@ -108,5 +108,17 @@
   "отказаться": "assets/audio/refuse.mp3",
   "велосипед": "assets/audio/bicycle.mp3",
   "аномалия": "assets/audio/anomaly.mp3",
-  "инструкция": "assets/audio/instruction.mp3"
+  "инструкция": "assets/audio/instruction.mp3",
+  "99": "assets/audio/99.mp3",
+  "90": "assets/audio/90.mp3",
+  "застегни": "assets/audio/zip.mp3",
+  "Алиса": "assets/audio/alice.mp3",
+  "олень": "assets/audio/deer.mp3",
+  "яйцо": "assets/audio/egg.mp3",
+  "блестящий": "assets/audio/brilliant.mp3",
+  "отличный": "assets/audio/perfect.mp3",
+  "хорошо": "assets/audio/well.mp3",
+  "обновление": "assets/audio/update.mp3",
+  "кирка": "assets/audio/pick.mp3",
+  "кирка ": "assets/audio/pickaxe.mp3"
 }
