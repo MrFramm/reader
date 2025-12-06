@@ -120,5 +120,15 @@
   "хорошо": "assets/audio/well.mp3",
   "обновление": "assets/audio/update.mp3",
   "кирка": "assets/audio/pick.mp3",
-  "кирка ": "assets/audio/pickaxe.mp3"
+  "кирка ": "assets/audio/pickaxe.mp3",
+  "топ": "assets/audio/top.mp3",
+  "судьба": "assets/audio/destiny.mp3",
+  "биом": "assets/audio/biom.mp3",
+  "она": "assets/audio/she.mp3",
+  "это": "assets/audio/this.mp3",
+  "в лесу": "assets/audio/inforest.mp3",
+  "на севере": "assets/audio/north.mp3",
+  "мы": "assets/audio/we.mp3",
+  "вы": "assets/audio/you.mp3",
+  "они": "assets/audio/they.mp3"
 }
