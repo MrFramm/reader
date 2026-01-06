@@ -130,5 +130,15 @@
   "на севере": "assets/audio/north.mp3",
   "мы": "assets/audio/we.mp3",
   "вы": "assets/audio/you.mp3",
-  "они": "assets/audio/they.mp3"
+  "они": "assets/audio/they.mp3",
+  "большой": "assets/audio/big.mp3",
+  "должен": "assets/audio/must.mp3",
+  "маленький": "assets/audio/little.mp3",
+  "чёрные": "assets/audio/black.mp3",
+  "последний": "assets/audio/last.mp3",
+  "новый": "assets/audio/new.mp3",
+  "старый": "assets/audio/old.mp3",
+  "хороший": "assets/audio/nice.mp3",
+  "белый": "assets/audio/white.mp3",
+  "тёмных": "assets/audio/dark.mp3"
 }
