@@ -1,12 +1,12 @@
+// Import scenes
+import { StartScene } from "./scenes/StartScene.js";
+import { GameScene } from "./scenes/GameScene.js";
+
 const config = {
   type: Phaser.AUTO,
   width: 1000,
   height: 900,
-  scene: {
-    preload: preload,
-    create: create,
-    update: update,
-  },
+  scene: [StartScene, GameScene],
 };
 const game = new Phaser.Game(config);
 let cards = [];
@@ -22,6 +22,16 @@ let victoryText = null;
 let codeDigits = [];
 let codeText = null;
 let sWords; // words that open code
+
+export const LEVELS = [
+  { id: 1, targetScore: 500 },
+  { id: 2, targetScore: 600 },
+  { id: 3, targetScore: 700 },
+  { id: 4, targetScore: 800 },
+  { id: 5, targetScore: 900 },
+  { id: 6, targetScore: 1000 },
+  { id: 7, targetScore: 1100 },
+];
 
 // Declare hintButtons globally so it can be accessed by the moved functions
 let hintButtons = [];
@@ -83,9 +93,11 @@ function resetAllInvisibleHintButtons(scene) {
     }
   });
 }
-
 function create() {
   window.sc = this;
+  runLevel.call(this);
+}
+function runLevel() {
   // Clear global arrays and destroy old objects
   cards.forEach((card) => {
     if (card.background && card.background.destroy) card.background.destroy();
@@ -117,7 +129,7 @@ function create() {
   backgroundImage.setScale(scale);
   backgroundImage.setPosition(
     (this.sys.game.config.width - imageWidth * scale) / 2,
-    (this.sys.game.config.height - imageHeight * scale) / 2
+    (this.sys.game.config.height - imageHeight * scale) / 2,
   );
   this.backgroundImage = backgroundImage;
   console.log("Loading words from JSON...");
@@ -187,7 +199,7 @@ ${cooldown}s`,
             backgroundColor: ["#00FF00", "#FFFF00", "#FF0000"][index],
             padding: { x: 10, y: 5 },
             align: "center",
-          }
+          },
         )
         .setOrigin(0.5, 0.5)
         .setInteractive({ useHandCursor: true });
@@ -206,15 +218,15 @@ ${cooldown}s`,
         if (!hint.active) return;
         // Remove wrong cards based on the hint
         const correctCards = cards.filter(
-          (card) => card.text.text === currentWord
+          (card) => card.text.text === currentWord,
         );
         const wrongCards = cards.filter(
-          (card) => card.text.text !== currentWord
+          (card) => card.text.text !== currentWord,
         );
         const cardsToLeave = hintCardCounts[index];
         const cardsToRemove = wrongCards.slice(
           0,
-          wrongCards.length - cardsToLeave
+          wrongCards.length - cardsToLeave,
         );
         cardsToRemove.forEach((card) => {
           card.background.destroy();
@@ -301,7 +313,7 @@ function handleCardClick(scene, cardBackground, word) {
     else score = -5; // Prevent repeated decrement, immediately negative
     scoreText.setText(`Score: ${score}`);
     const cardIndex = cards.findIndex(
-      (card) => card.background === cardBackground
+      (card) => card.background === cardBackground,
     );
     if (cardIndex !== -1) {
       cards[cardIndex].background.destroy();
@@ -336,7 +348,7 @@ function generateCardGrid(scene) {
         y + cardHeight / 2,
         cardWidth,
         cardHeight,
-        0xffffff
+        0xffffff,
       );
       const cardText = scene.add
         .text(x, y, word, {
@@ -357,7 +369,7 @@ function generateCardGrid(scene) {
       }
       cardBackground.setInteractive({ useHandCursor: true });
       cardBackground.on("pointerdown", () =>
-        handleCardClick(scene, cardBackground, word)
+        handleCardClick(scene, cardBackground, word),
       );
       cards.push({ background: cardBackground, text: cardText });
     }
@@ -378,14 +390,14 @@ function disableCards() {
 
 function enableCards() {
   cards.forEach((card) =>
-    card.background.setInteractive({ useHandCursor: true })
+    card.background.setInteractive({ useHandCursor: true }),
   );
 }
 
 function selectRandomWord(scene) {
   const randomCard = cards[Math.floor(Math.random() * cards.length)];
   currentWord = randomCard.text.text;
-  console.log(`Selected word: ${currentWord}`);
+  //console.log(`Selected word: ${currentWord}`);
   scene.sound.stopAll();
   const audio = scene.sound.add(currentWord);
   audio.play();
@@ -413,7 +425,7 @@ function endGame(scene, message) {
           color: "#ffffff",
           backgroundColor: "#000000",
           padding: { x: 20, y: 10 },
-        }
+        },
       )
       .setOrigin(0.5, 0.5);
     disableCards();
@@ -432,7 +444,7 @@ function endGame(scene, message) {
     lostBG.setScale(scale);
     lostBG.setPosition(
       (scene.sys.game.config.width - imageWidth * scale) / 2,
-      scene.sys.game.config.height
+      scene.sys.game.config.height,
     );
 
     // Play lost sound
@@ -450,7 +462,7 @@ function endGame(scene, message) {
           color: "#ffffff",
           backgroundColor: "#000000",
           padding: { x: 20, y: 10 },
-        }
+        },
       )
       .setOrigin(0.5, 0.5);
 
@@ -534,7 +546,7 @@ function showPinInput(scene, code) {
           .video(
             scene.sys.game.config.width / 2,
             scene.sys.game.config.height / 2,
-            "hiddenVideo"
+            "hiddenVideo",
           )
           .setOrigin(0.5)
           .setDepth(20);
@@ -589,7 +601,7 @@ function binomialCumulativeAtLeast(k, n, p) {
  * @returns {number|null} - Minimum number of successful words required in the pool to meet the probability,
  *                          or null if no number satisfies the condition
  */
-function minSuccessfulWords(words, T, c, N) {
+export function minSuccessfulWords(words, T, c, N) {
   const poolSize = words.length;
   for (let S = T; S <= poolSize; S++) {
     const p = S / poolSize;
@@ -599,4 +611,16 @@ function minSuccessfulWords(words, T, c, N) {
     }
   }
   return null; // no suitable S found to reach probability c
+}
+export function getCompletedLevels() {
+  const saved = localStorage.getItem("completedLevels");
+  return saved ? JSON.parse(saved) : [];
+}
+
+export function markLevelComplete(levelId) {
+  const completed = getCompletedLevels();
+  if (!completed.includes(levelId)) {
+    completed.push(levelId);
+    localStorage.setItem("completedLevels", JSON.stringify(completed));
+  }
 }
